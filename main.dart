@@ -1,201 +1,136 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const NotesApp());
+  runApp(const MyApp());
 }
 
-class NotesApp extends StatelessWidget {
-  const NotesApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Заметки',
+      debugShowCheckedModeBanner: false, 
+      title: 'Medinow UI',
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color.fromARGB(255, 70, 70, 72),
-  ),
+        scaffoldBackgroundColor: const Color(0xFF009688),
+        fontFamily: 'Arial', 
       ),
-      home: const NotesScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }
 
-class NotesScreen extends StatefulWidget {
-  const NotesScreen({super.key});
-
-  @override
-  State<NotesScreen> createState() => _NotesScreenState();
-}
-
-class _NotesScreenState extends State<NotesScreen> {
-  
-  final TextEditingController _controller = TextEditingController();
-
-  
-  final List<String> _notes = [];
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-
-  void _saveNote() {
-    final text = _controller.text.trim(); 
-    if (text.isEmpty) {
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Введите текст заметки')),
-      );
-      return;
-    }
-
-    setState(() {
-      _notes.add(text);       
-      _controller.clear();    
-    });
-  }
-
-  
-  void _deleteNote(int index) {
-    setState(() {
-      _notes.removeAt(index);
-    });
-  }
-
-  
-  Future<void> _editNote(int index) async {
-    final TextEditingController editController =
-        TextEditingController(text: _notes[index]);
-
-    final result = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Редактировать заметку'),
-        content: TextField(
-          controller: editController,
-          autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Введите новый текст',
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context), 
-            child: const Text('Отмена'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, editController.text.trim());
-            },
-            child: const Text('Сохранить'),
-          ),
-        ],
-      ),
-    );
-
-    
-    if (result != null && result.isNotEmpty) {
-      setState(() {
-        _notes[index] = result;
-      });
-    }
-  }
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Заметки'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: SafeArea(
         child: Column(
           children: [
-            
-            TextField(
-              controller: _controller,
-              maxLines: 3, 
-              minLines: 1,
-              decoration: InputDecoration(
-                hintText: 'Введите текст заметки...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                filled: true,
-                fillColor: Colors.grey[100],
+            const SizedBox(height: 60), 
+            const Text(
+              'medinow',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 1.2,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
+            const Text(
+              'Meditate With Us!',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white70, 
+              ),
+            ),
+
+            const SizedBox(height: 60), 
 
             
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton.icon(
-                onPressed: _saveNote,
-                icon: const Icon(Icons.save),
-                label: const Text('Сохранить', style: TextStyle(fontSize: 16)),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'Sign in with Apple',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  
+                  
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFB2EBF2), 
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'Continue with Email or Phone',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Continue With Google',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                   height: size.height * 0.35, 
+                  width: double.infinity,
+                  child: Image.asset(
+                    'assets/meditation.png', 
+                    fit: BoxFit.contain,
+                    width: double.infinity, 
                   ),
                 ),
               ),
-            ),
-
-            const SizedBox(height: 20),
-
-           
-            Expanded(
-              child: _notes.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'Список пуст.\nДобавьте первую заметку!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                    )
-                  : ListView.separated(
-                      itemCount: _notes.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: ListTile(
-                            leading: const Icon(Icons.label),
-                            title: Text(
-                              _notes[index],
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                
-                                IconButton(
-                                  icon: const Icon(Icons.edit, color: Colors.blue),
-                                  onPressed: () => _editNote(index),
-                                ),
-                                
-                                IconButton(
-                                  icon: const Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () => _deleteNote(index),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
             ),
           ],
         ),
